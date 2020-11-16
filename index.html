@@ -49,7 +49,7 @@
 										<h2>REST API with Django and REST Framework</h2>
 										<h3>Intro</h3>
 
-											<h5>Infrastrucutre</h5>
+											<h5>Infrastrucutre:</h5>
 											<ul>
 												<li>Main project: rest_app.</li>
 												<li>Application: api.</li>
@@ -61,29 +61,43 @@
 												<li>Note that provided endpoint has two parts: <span style="color:#1cda7a;">api/</span> and <span style="color:red;">users</span>.</li>
 												<li>Django goes to main rest_app urls.py searching for the <span style="color:#1cda7a;">api/</span> endpoint.
 													<br>
-													<code>
-														from django.urls import path, include<br>
-														urlpatterns = [<br>&nbsp&nbsp&nbsp
-															path('<span style="color:#1cda7a;">api/</span>', include('api.urls'))<br>&nbsp&nbsp&nbsp
-														]
-													</code>
+													<code>from django.urls import path, include</code><br>
+													<code>urlpatterns = [</code><br>&nbsp&nbsp&nbsp
+													<code>path('<span style="color:#1cda7a;">api/</span>', include('api.urls'))</code><br>
+													<code>]</code>
 												</li>
-												<li>Due to instructions in res_app urls.py endpoint <span style="color:red;">users</span> is being redirected to api urls.py.</li>
-												<li>The endpoint <span style="color:red;">users</span> follows instruction in api urls.py where is mapped with a specific function.
+												<li>Due to instructions in rest_app urls.py endpoint <span style="color:red;">users</span> is being redirected to api urls.py.</li>
+												<li>The endpoint <span style="color:red;">users</span> follows instruction in api urls.py where is mapped with a function as_view() excuted on UserView:
 													<br>
-													<code>
-														from django.urls import path<br>
-														from .views import main<br>
-														urlpatterns = [<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															path('<span style="color:red;">users</span>', main)<br>&nbsp&nbsp&nbsp
-														]
-													</code>
+													<code>from django.urls import path</code><br>
+													<code>from .views import UserView</code><br>
+													<code>urlpatterns = [</code><br>&nbsp&nbsp
+													<code>path('<span style="color:red;">users</span>', UserView.as_view())</code><br>
+													<code>]</code>
 												</li>
-												<li>Application endpoint calls function 'main' from api views.py.
-													<br>
-													<code>from django.http import HttpResponse</code><br>
-													<code>def main(request):</code><br>&nbsp&nbsp&nbsp
-													<code>return HttpResponse("&lt;h1&gt;Hello World&lt;/h1&gt;")</code>
+												<li>UserView uses serializer to get data into JSON:<br>
+													<code>from rest_framework import generics</code><br>
+													<code>from .serializers import UserSerializer</code><br>
+													<code>from .models import User</code><br>
+													<code>class UserView(generics.CreateAPIView):</code><br>&nbsp&nbsp&nbsp
+													<code>queryset = User.objects.all()</code><br>&nbsp&nbsp&nbsp
+													<code>serializer_class = UserSerializer</code>
+												</li>
+												<li>In serializers.py we define UserSerializer:<br>
+													<code>from rest_framework import serializers</code><br>
+													<code>from .models import User</code><br>
+													<code>class UserSerializer(serializers.ModelSerializer):</code><br>&nbsp&nbsp&nbsp
+													<code>class Meta:</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+													<code>model = User</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+													<code>fields = ('id', 'email', 'nick', 'level', 'created_date')</code>
+												</li>
+												<li>UserSerializer takes User as model:<br>
+													<code>from django.db import models</code><br>
+													<code>class User(models.Model):</code><br>&nbsp&nbsp&nbsp
+													<code>email = models.CharField(max_length=30, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+													<code>nick = models.CharField(max_length=20, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+													<code>level = models.IntegerField(null=False, default=1)</code><br>&nbsp&nbsp&nbsp
+													<code>created_date = models.DateTimeField(auto_now_add=True)</code>
 												</li>
 												<li>Called function accepts request from endpoint and returns HTML response.</li>
 												<li>Hitting endpoint: www.web-page.com/api/users results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li>
