@@ -89,6 +89,20 @@
 												<li>Hitting endpoint: www.web-page.com/api/users results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li>
 											</ol>
 
+											<h5>Terminology</h5>
+											<ul>
+												<li>Serializer - takes model written in Python and translates it into JSON:
+													<br>
+													<code>{</code><br>&nbsp&nbsp&nbsp
+													<code>'model_attribute_1': 'value',</code><br>&nbsp&nbsp&nbsp
+													<code>'model_attribute_2': 'value',</code><br>&nbsp&nbsp&nbsp
+													<code>'model_attribute_3': 'value'</code><br>
+													<code>}</code><br>
+													- JSON is the format of front-end or application request to REST API<br>
+													- JSON is the format of back-end response through REST API to front-end or application.
+												</li>
+											</ul>
+
 									</header>
 								</div>
 							</section>
@@ -134,9 +148,10 @@
 									   <br>&nbsp&nbsp&nbsp
 									   <code>python manage.py startapp api</code>
 									  </li>
-										<li>Creating new file in api application:
+										<li>Creating new files in api application:
 											<br>&nbsp&nbsp&nbsp
-											<code>.\api\urls.py</code>
+											<code>.\api\urls.py</code><br>
+											<code>.\api\serializers.py</code>
 										</li>
 										<li>Entering apps to rest_app.settings:
 											<br>&nbsp&nbsp&nbsp
