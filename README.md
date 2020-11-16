@@ -1,2 +1,2 @@
-# REST-API-with-Django
+# REST-API-with-Django-and-REST-Framework
 In progress....
