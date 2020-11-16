@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Portfolio Artur Skrzeta</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<section id="header">
+				<header>
+					<span class="image avatar"><a href="https://arturskrzeta.github.io/"><img src="images/avatar.png" alt="" style="margin-bottom:0px;"/></a></span>
+					<h1 id="logo"><a href="https://arturskrzeta.github.io/">Artur Skrzeta</a></h1>
+					<p>Data Analyst<br />
+					+4 years experience</p>
+				</header>
+				<nav id="nav">
+					<ul>
+						<li><a href="#one" class="active">Intro</a></li>
+						<li><a href="#two">Features</a></li>
+						<li><a href="#three">Demo</a></li>
+						<li><a href="#four">Setup</a></li>
+						<li><a href="#five">Source Code</a></li>
+					</ul>
+				</nav>
+				<footer>
+					<ul class="icons">
+						<li><a href="https://www.linkedin.com/in/artur-skrz%C4%99ta-010b23187/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						<li><a href="https://www.instagram.com/arturskrrr/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+						<li><a href="https://github.com/ArturSkrzeta" class="icon brands fa-github"><span class="label">Github</span></a></li>
+						<li><a href="mailto: arturskrzeta@gmail.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li
+					</ul>
+				</footer>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- One -->
+							<section id="one">
+								<div class="container">
+									<header class="major">
+										<h2>Purchase Request Management System</h2>
+										<h3>Intro</h3>
+
+											<h5>Infrastrucutre</h5>
+											<ul>
+												<li>Main project: rest_app.</li>
+												<li>Application: api.</li>
+											</ul>
+
+											<h5>Workflow of <b>api</b> application:</h5>
+											<ol>
+												<li>User hits the web address with a specified endpoint, e.g. www.web-page.com/<span style="color:#1cda7a;">api/</span><span style="color:red;">users</span>.</li>
+												<li>Note that provided endpoint has two parts: <span style="color:#1cda7a;">api/</span> and <span style="color:red;">users</span>.</li>
+												<li>Django goes to main rest_app urls.py searching for the <span style="color:#1cda7a;">api/</span> endpoint.
+													<br>
+													<code>
+														from django.urls import path, include<br>
+														urlpatterns = [<br>&nbsp&nbsp&nbsp
+															path('<span style="color:#1cda7a;">api/</span>', include('api.urls'))<br>&nbsp&nbsp&nbsp
+														]
+													</code>
+												</li>
+												<li>Due to instructions in res_app urls.py endpoint <span style="color:red;">users</span> is being redirected to api urls.py.</li>
+												<li>The endpoint <span style="color:red;">users</span> follows instruction in api urls.py where is mapped with a specific function.
+													<br>
+													<code>
+														from django.urls import path<br>
+														from .views import main<br>
+														urlpatterns = [<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															path('<span style="color:red;">users</span>', main)<br>&nbsp&nbsp&nbsp
+														]
+													</code>
+												</li>
+												<li>Application endpoint calls function 'main' from api views.py.
+													<br>
+													<code>from django.http import HttpResponse</code><br>
+													<code>def main(request):</code><br>&nbsp&nbsp&nbsp
+													<code>return HttpResponse("&lt;h1&gt;Hello World&lt;/h1&gt;")</code>
+												</li>
+												<li>Called function accepts request from endpoint and returns HTML response.</li>
+												<li>Hitting endpoint: www.web-page.com/api/users results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li>
+											</ol>
+
+									</header>
+								</div>
+							</section>
+
+						<!-- Two -->
+							<section id="two">
+								<div class="container">
+									<h3>Features</h3>
+									<p>App includes following features:</p>
+									<ul class="feature-icons">
+										<li class="icon solid fa-check">REST API</li>
+									</ul>
+								</div>
+							</section>
+
+						<!-- Three -->
+							<section id="three">
+								<div class="container">
+									<h3>Demo</h3>
+									<h5>...</h5>
+								</div>
+							</section>
+
+
+						<!-- Four -->
+							<section id="four">
+								<div class="container">
+									<h3>Setup</h3>
+									<ol>
+									  <li>Installing django library in venv:
+									   <br>&nbsp&nbsp&nbsp
+									   <code>pip install django</code><br>&nbsp&nbsp&nbsp
+										 <code>pip install djangorestframework</code>
+									  <li>Starting project in project directory:
+									   <br>&nbsp&nbsp&nbsp
+									   <code>django-admin startproject rest_app</code>
+									  </li>
+									  <li>Changing directory to rest_app:
+									   <br>&nbsp&nbsp&nbsp
+									   <code>cd .\restapp</code>
+									  </li>
+									  <li>Creating app:
+									   <br>&nbsp&nbsp&nbsp
+									   <code>python manage.py startapp api</code>
+									  </li>
+										<li>Creating new file in api application:
+											<br>&nbsp&nbsp&nbsp
+											<code>.\api\urls.py</code>
+										</li>
+										<li>Entering apps to rest_app.settings:
+											<br>&nbsp&nbsp&nbsp
+											<code>INSTALLED_APS = [</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>....,</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>'api.apps.ApiConfig',</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>'rest_framework'</code><br>&nbsp&nbsp&nbsp
+											<code>]</code>
+										</li>
+
+
+
+
+										<li>Data migration each time when we want to update changes to db (first migration will create a database with default tables):
+									   <br>&nbsp&nbsp&nbsp
+									   <code>python manage.py makemigrations</code><br>&nbsp&nbsp&nbsp&nbsp
+									   it detects the changes and prepares them to be uploaded to the database<br>&nbsp&nbsp&nbsp&nbsp
+									   the changes are being saved to migrations directory
+									  </li>
+									  <li>Applying changes to db:
+									   <br>&nbsp&nbsp&nbsp
+									   <code>python manage.py migrate</code>
+									  </li>
+									  <li>Creating superuser:
+									   <br>&nbsp&nbsp&nbsp
+									   <code>python manage.py createsuperuser</code>
+									  </li>
+									</ol>
+								</div>
+							</section>
+
+							<section id="five">
+								<div class="container">
+									<h3>Source Code</h3>
+									<p>You can view the source code: <a href="https://github.com/ArturSkrzeta/Purchase-Request-Management-System/tree/master/django_project">HERE</a></p>
+									<p>&nbsp</p>
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<section id="footer">
+						<div class="container">
+							<a href="https://arturskrzeta.github.io/" style="padding-bottom:10px;">Back to Portfolio</a>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
