@@ -55,59 +55,6 @@
 												<li>Application: api.</li>
 											</ul>
 
-											<h5>Workflow of <b>api</b> application:</h5>
-											<ol>
-												<li>User hits the web address with a specified endpoint, e.g. www.web-page.com/<span style="color:#1cda7a;">api/</span><span style="color:red;">users</span>.</li>
-												<li>Note that provided endpoint has two parts: <span style="color:#1cda7a;">api/</span> and <span style="color:red;">users</span>.</li>
-												<li>Django goes to main rest_app urls.py searching for the <span style="color:#1cda7a;">api/</span> endpoint.
-													<br>
-													<code>from django.urls import path, include</code><br>
-													<code>urlpatterns = [</code><br>&nbsp&nbsp&nbsp
-													<code>path('<span style="color:#1cda7a;">api/</span>', include('api.urls'))</code><br>
-													<code>]</code>
-												</li>
-												<li>Due to instructions in rest_app urls.py endpoint <span style="color:red;">users</span> is being redirected to api urls.py.</li>
-												<li>The endpoint <span style="color:red;">users</span> follows instruction in api urls.py where is mapped with a function as_view() excuted on UserView:
-													<br>
-													<code>from django.urls import path</code><br>
-													<code>from .views import UserView</code><br>
-													<code>urlpatterns = [</code><br>&nbsp&nbsp
-													<code>path('<span style="color:red;">users</span>', UserView.as_view())</code><br>
-													<code>]</code>
-												</li>
-												<li>UserView uses serializer to get data into JSON:<br>
-													<code>from rest_framework import generics</code><br>
-													<code>from .serializers import UserSerializer</code><br>
-													<code>from .models import User</code><br>
-													<code>class UserView(generics.CreateAPIView):</code><br>&nbsp&nbsp&nbsp
-													<code>queryset = User.objects.all()</code><br>&nbsp&nbsp&nbsp
-													<code>serializer_class = UserSerializer</code>
-												</li>
-												<li>In serializers.py we define UserSerializer:<br>
-													<code>from rest_framework import serializers</code><br>
-													<code>from .models import User</code><br>
-													<code>class UserSerializer(serializers.ModelSerializer):</code><br>&nbsp&nbsp&nbsp
-													<code>class Meta:</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-													<code>model = User</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-													<code>fields = (<span style="color:#1cda7a;">'id', 'email', 'nick', 'level', 'created_date'</span>)</code><br>
-													- in class Meta we indicate which model we want to serialize,<br>
-													- fields determines the JSON structure of User model,<br>
-													- 'id' field is created automatically for every model once created in db so we want to include this in JSON.
-												</li>
-												<li>UserSerializer takes User as model:<br>
-													<code>from django.db import models</code><br>
-													<code>class User(models.Model):</code><br>&nbsp&nbsp&nbsp
-													<code><span style="color:#1cda7a;">email</span> = models.CharField(max_length=30, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
-													<code><span style="color:#1cda7a;">nick</span> = models.CharField(max_length=20, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
-													<code><span style="color:#1cda7a;">level</span> = models.IntegerField(null=False, default=1)</code><br>&nbsp&nbsp&nbsp
-													<code><span style="color:#1cda7a;">created_date</span> = models.DateTimeField(auto_now_add=True)</code><br>
-													- notice, I don't declare 'id' field in the model,<br>
-													- as I said above, 'id' field is being generated automatically during model db creation.
-												</li>
-												<!-- <li>Called function accepts request from endpoint and returns HTML response.</li>
-												<li>Hitting endpoint: www.web-page.com/api/users results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li> -->
-											</ol>
-
 											<h5>Terminology</h5>
 											<ul>
 												<li><b>Endpoint</b> - an url for a 'room' on the web-server where we can access server's resources.</li>
@@ -161,7 +108,59 @@
 							<section id="three">
 								<div class="container">
 									<h3>Demo</h3>
-									<h5>...</h5>
+									
+									<h5>Workflow of <b>api</b> application:</h5>
+									<ol>
+										<li>User hits the web address with a specified endpoint, e.g. www.web-page.com/<span style="color:#1cda7a;">api/</span><span style="color:red;">users</span>.</li>
+										<li>Note that provided endpoint has two parts: <span style="color:#1cda7a;">api/</span> and <span style="color:red;">users</span>.</li>
+										<li>Django goes to main rest_app urls.py searching for the <span style="color:#1cda7a;">api/</span> endpoint.
+											<br>
+											<code>from django.urls import path, include</code><br>
+											<code>urlpatterns = [</code><br>&nbsp&nbsp&nbsp
+											<code>path('<span style="color:#1cda7a;">api/</span>', include('api.urls'))</code><br>
+											<code>]</code>
+										</li>
+										<li>Due to instructions in rest_app urls.py endpoint <span style="color:red;">users</span> is being redirected to api urls.py.</li>
+										<li>The endpoint <span style="color:red;">users</span> follows instruction in api urls.py where is mapped with a function as_view() excuted on UserView:
+											<br>
+											<code>from django.urls import path</code><br>
+											<code>from .views import UserView</code><br>
+											<code>urlpatterns = [</code><br>&nbsp&nbsp
+											<code>path('<span style="color:red;">users</span>', UserView.as_view())</code><br>
+											<code>]</code>
+										</li>
+										<li>UserView uses serializer to get data into JSON:<br>
+											<code>from rest_framework import generics</code><br>
+											<code>from .serializers import UserSerializer</code><br>
+											<code>from .models import User</code><br>
+											<code>class UserView(generics.CreateAPIView):</code><br>&nbsp&nbsp&nbsp
+											<code>queryset = User.objects.all()</code><br>&nbsp&nbsp&nbsp
+											<code>serializer_class = UserSerializer</code>
+										</li>
+										<li>In serializers.py we define UserSerializer:<br>
+											<code>from rest_framework import serializers</code><br>
+											<code>from .models import User</code><br>
+											<code>class UserSerializer(serializers.ModelSerializer):</code><br>&nbsp&nbsp&nbsp
+											<code>class Meta:</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>model = User</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>fields = (<span style="color:#1cda7a;">'id', 'email', 'nick', 'level', 'created_date'</span>)</code><br>
+											- in class Meta we indicate which model we want to serialize,<br>
+											- fields determines the JSON structure of User model,<br>
+											- 'id' field is created automatically for every model once created in db so we want to include this in JSON.
+										</li>
+										<li>UserSerializer takes User as model:<br>
+											<code>from django.db import models</code><br>
+											<code>class User(models.Model):</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">email</span> = models.CharField(max_length=30, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">nick</span> = models.CharField(max_length=20, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">level</span> = models.IntegerField(null=False, default=1)</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">created_date</span> = models.DateTimeField(auto_now_add=True)</code><br>
+											- notice, I don't declare 'id' field in the model,<br>
+											- as I said above, 'id' field is being generated automatically during model db creation.
+										</li>
+										<!-- <li>Called function accepts request from endpoint and returns HTML response.</li>
+										<li>Hitting endpoint: www.web-page.com/api/users results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li> -->
+									</ol>
 								</div>
 							</section>
 
