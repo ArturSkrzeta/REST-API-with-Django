@@ -89,15 +89,20 @@
 													<code>class UserSerializer(serializers.ModelSerializer):</code><br>&nbsp&nbsp&nbsp
 													<code>class Meta:</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 													<code>model = User</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-													<code>fields = ('id', 'email', 'nick', 'level', 'created_date')</code>
+													<code>fields = (<span style="color:#1cda7a;">'id', 'email', 'nick', 'level', 'created_date'</span>)</code><br>
+													- in class Meta we indicate which model we want to serialize,<br>
+													- fields determines the JSON structure of User model,<br>
+													- 'id' field is created automatically for every model once created in db so we want to include this in JSON.
 												</li>
 												<li>UserSerializer takes User as model:<br>
 													<code>from django.db import models</code><br>
 													<code>class User(models.Model):</code><br>&nbsp&nbsp&nbsp
-													<code>email = models.CharField(max_length=30, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
-													<code>nick = models.CharField(max_length=20, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
-													<code>level = models.IntegerField(null=False, default=1)</code><br>&nbsp&nbsp&nbsp
-													<code>created_date = models.DateTimeField(auto_now_add=True)</code>
+													<code><span style="color:#1cda7a;">email</span> = models.CharField(max_length=30, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+													<code><span style="color:#1cda7a;">nick</span> = models.CharField(max_length=20, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+													<code><span style="color:#1cda7a;">level</span> = models.IntegerField(null=False, default=1)</code><br>&nbsp&nbsp&nbsp
+													<code><span style="color:#1cda7a;">created_date</span> = models.DateTimeField(auto_now_add=True)</code><br>
+													- notice, I don't declare 'id' field in the model,<br>
+													- as I said above, 'id' field is being generated automatically during model db creation.
 												</li>
 												<!-- <li>Called function accepts request from endpoint and returns HTML response.</li>
 												<li>Hitting endpoint: www.web-page.com/api/users results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li> -->
@@ -105,7 +110,9 @@
 
 											<h5>Terminology</h5>
 											<ul>
-												<li>Serializer - takes model written in Python and translates it into JSON:
+												<li><b>Endpoint</b> - an url for a 'room' on the web-server where we can access server's resources.</li>
+												<li><b>View</b> - maps endpoint url with what you see in the front-end.</li>
+												<li><b>Serializer</b> - takes model written in Python and translates it into JSON:
 													<br>
 													<code>{</code><br>&nbsp&nbsp&nbsp
 													<code>'model_attribute_1': 'value',</code><br>&nbsp&nbsp&nbsp
@@ -115,6 +122,22 @@
 													- JSON is the format of front-end or application request to REST API<br>
 													- JSON is the format of back-end response through REST API to front-end or application.
 												</li>
+												<li><b>Model</b> - data schema written as Python class where class attributes reflect data schema fields.</li>
+											</ul>
+
+											<h5>Architecture without REST:</h5>
+											<img src="images/norest.JPG" width="680">
+											<ul>
+												<li>Each client/application needs to have it's own business logic.</li>
+												<li>Each client/application needs to have it's own database connection.</li>
+												<li>Front-end needs to have its own web-server where db resources are disposable due to business logic.</li>
+											</ul>
+
+											<h5>Architecture with REST:</h5>
+											<img src="images/withrest.JPG" width="740">
+											<ul>
+												<li>REST API enables to connect db by different apps as well as poses a web server for front-end.</li>
+												<li>REST API has its onw business logic which is shared among apps getting connected.</li>
 											</ul>
 
 									</header>
@@ -127,7 +150,9 @@
 									<h3>Features</h3>
 									<p>App includes following features:</p>
 									<ul class="feature-icons">
+										<li class="icon solid fa-check">Django</li>
 										<li class="icon solid fa-check">REST API</li>
+										<li class="icon solid fa-check">Rest Framework</li>
 									</ul>
 								</div>
 							</section>
@@ -178,9 +203,6 @@
 											<code>'rest_framework'</code><br>&nbsp&nbsp&nbsp
 											<code>]</code>
 										</li>
-
-
-
 
 										<li>Data migration each time when we want to update changes to db (first migration will create a database with default tables):
 									   <br>&nbsp&nbsp&nbsp
