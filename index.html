@@ -57,7 +57,9 @@
 
 											<h5>Terminology</h5>
 											<ul>
-												<li><b>Endpoint</b> - an url for a web-service where we can access server's resources.</li>
+												<li><b>Web-service</b> - service that allows user to communicate with server.</li>
+												<li><b>HTTP Protocol</b> - client requests or server answers mover.</li>
+												<li><b>Endpoint</b> - an url for a web-service with which we can access defined server's resources.</li>
 												<li><b>View</b> - maps endpoint url with what you see in the front-end.</li>
 												<li><b>Serializer</b> - takes model written in Python and translates it into JSON:
 													<br>
@@ -77,13 +79,13 @@
 											<ul>
 												<li>Each client/application needs to have it's own business logic.</li>
 												<li>Each client/application needs to have it's own database connection.</li>
-												<li>Front-end needs to have its own web-service where db resources are disposable due to business logic.</li>
+												<li>Front-end needs to have its own dedicated web-service where db resources are disposable due to business logic.</li>
 											</ul>
 
 											<h5>Architecture with REST:</h5>
 											<img src="images/withrest.JPG" width="740">
 											<ul>
-												<li>REST API enables to connect db by different apps as well as poses a web-service for front-end.</li>
+												<li>REST API enables to connect db by different apps as well as poses a web-service for a front-end.</li>
 												<li>REST API has its onw business logic which is shared among apps getting connected.</li>
 											</ul>
 
@@ -168,10 +170,10 @@
 									<ul>
 										<li>Application makes use of two API views:
 											<br>
-											- <b>CreateAPIView</b> - we can be sending POST request from HTML form to web-service<br>&nbsp&nbsp
-											view available under endpoint: api/user_new,<br>
+											- <b>CreateAPIView</b> - we can be sending POST requests from HTML form through web-service<br>&nbsp&nbsp
+											view available under endpoint: <b>api/user_new</b>,<br>
 											- <b>ListAPIView</b> - lists all db entries in JSON format<br>&nbsp&nbsp
-											view available under endpoint: api/users.
+											view available under endpoint: <b>api/users</b>.
 										</li>
 									</ul>
 
