@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+web-service<!DOCTYPE HTML>
 
 <html>
 	<head>
@@ -46,111 +46,45 @@
 							<section id="one">
 								<div class="container">
 									<header class="major">
-										<h2>Purchase Request Management System</h2>
+										<h2>REST Framework in Django App</h2>
 										<h3>Intro</h3>
-										<p>The application for requests/tickets/tasks management raised from the need of ecsaping from shared excel files where the risk of getting things messy is very very high.
-											That affects the data quality which has enormous imapct on further reporting and the analysis.</p>
-											<h5>Applications</h5>
+
+											<h5>Infrastrucutre:</h5>
 											<ul>
-												<li>Single Django project can have multiple applications for single responsibility.</li>
-												<li>My Django project contains two applications:
-													<br>
-													- application for registering and logging users into the system,<br>
-													- application for adding, updating, removing purchase requests.<br>
-												</li>
-												<li>Application package contains:
-													<br>
-													<b>- migrations</b> - migrating model changes to database,<br>
-													<b>- _init_.py</b> - making python package,<br>
-													<b>- admin.py</b> - keeping admin instance,<br>
-													<b>- apps.py</b> - keeping app class for a projectc reference,<br>
-													<b>- models.py</b> - storing database models,<br>
-													<b>- test.py</b> - testing views or models,<br>
-													<b>- views.py</b> - metohds returning response to user,<br>
-													<b>- url.py</b> - keeps endpoints diretcign to methods in viwes.<br>
-												</li>
-												<li>All installed apps have to be included in mian project setting.py file:
-													<br>
-													<code>
-													INSTALLED_APPS = [<br>
-													  &nbsp&nbsp&nbsp'users.apps.UsersConfig',<br>
-													  &nbsp&nbsp&nbsp'prs.apps.PrsConfig',<br>
-													  &nbsp&nbsp&nbsp'crispy_forms',<br>
-													  &nbsp&nbsp&nbsp'django.contrib.admin',<br>
-													  &nbsp&nbsp&nbsp'django.contrib.auth',<br>
-													  &nbsp&nbsp&nbsp'django.contrib.contenttypes',<br>
-													  &nbsp&nbsp&nbsp'django.contrib.sessions',<br>
-													  &nbsp&nbsp&nbsp'django.contrib.messages',<br>
-													  &nbsp&nbsp&nbsp'django.contrib.staticfiles',<br>
-													]
-													</code>
-												</li>
+												<li>Main project: rest_app.</li>
+												<li>Application: api.</li>
 											</ul>
 
-											<h5>Object Relational Mapper (ORM)</h5>
+											<h5>Terminology</h5>
 											<ul>
-												<li>Django has ORM which allows to access database in obejct-oriented way.</li>
-												<li>ORM allows to use different databases like SQLite or PostrgreSQL having no changes to code but accessing database with objects, f.e.:
-														<br>
-														- using SQLite db for development,<br>
-														- using PostgreSQL db for production.
+												<li><b>Endpoint</b> - an url for a web-service where we can access server's resources.</li>
+												<li><b>View</b> - maps endpoint url with what you see in the front-end.</li>
+												<li><b>Serializer</b> - takes model written in Python and translates it into JSON:
+													<br>
+													<code>{</code><br>&nbsp&nbsp&nbsp
+													<code>'model_attribute_1': 'value',</code><br>&nbsp&nbsp&nbsp
+													<code>'model_attribute_2': 'value',</code><br>&nbsp&nbsp&nbsp
+													<code>'model_attribute_3': 'value'</code><br>
+													<code>}</code><br>
+													- JSON is the format of front-end or application request to REST API<br>
+													- JSON is the format of back-end response through REST API to front-end or application.
 												</li>
-												<li>In ORM, we can represent database structure with classes - they are called <b>MODELS</b>.</li>
-												<li>Django converts a class into a data schema with command:
-													<br>&nbsp&nbsp&nbsp
-													<code>python manage.py makemigrations</code>
-												</li>
-												<li>ORM lets us to query the database through the model classes.</li>
+												<li><b>Model</b> - data schema written as Python class where class attributes reflect data schema fields.</li>
 											</ul>
 
-											<h5>Terminology:</h5>
+											<h5>Architecture without REST:</h5>
+											<img src="images/norest.JPG" width="680">
 											<ul>
-												<li><b>Endpoints</b> - allocation of the web-server that you indicate you want to go to:
-													<br>&nbsp&nbsp&nbsp
-													www.web-page.com/<b>endpoint</b>
-													<br>&nbsp&nbsp&nbsp
-													incoming request --> endopoint of web-server --> response (JSON, HTML)
-												</li>
-												<li><b>Model</b> - Python class that, with its attributes, reflects database schema:<br>
-													- when you create a table in a relational db, you create a model in Django,<br>
-													- models in Django are Python classes,<br>
-													- class attributes reflects table fields,<br>
-													- this way Djagno allows write Python code and it interprets it and automatically performs all the db operation for us.
-												</li>
+												<li>Each client/application needs to have it's own business logic.</li>
+												<li>Each client/application needs to have it's own database connection.</li>
+												<li>Front-end needs to have its own web-service where db resources are disposable due to business logic.</li>
 											</ul>
 
-											<h5>Workflow:</h5>
+											<h5>Architecture with REST:</h5>
+											<img src="images/withrest.JPG" width="740">
 											<ul>
-												<li>User hits the web address with a specified endpoint, e.g. www.web-page.com/<span style="color:#1cda7a;">api/</span><span style="color:red;">my_endpoint</span>.</li>
-												<li>Note that provided endpoint has two parts: <span style="color:#1cda7a;">api/</span> and <span style="color:red;">my_endpoint</span>.</li>
-												<li>Django goes to main web-server urls.py searching for a <span style="color:#1cda7a;">api/</span> endpoint.
-													<br>
-													<code>
-														from django.urls import path, include<br>
-														urlpatterns = [<br>&nbsp&nbsp&nbsp
-															path('<span style="color:#1cda7a;">api/</span>', include('my_application.urls'))<br>&nbsp&nbsp&nbsp
-														]
-													</code>
-												</li>
-												<li>Due to instructions in web-server urls.py endpoint <span style="color:red;">my_endpoint</span> is being redirected to my_application urls.py.</li>
-												<li>The endpoint <span style="color:red;">my_endpoint</span> follows instruction in application urls.py where is mapped with a specific function.
-													<br>
-													<code>
-														from django.urls import path<br>
-														from .views import main<br>
-														urlpatterns = [<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															path('<span style="color:red;">my_endpoint</span>', main)<br>&nbsp&nbsp&nbsp
-														]
-													</code>
-												</li>
-												<li>Application endpoint calls function 'main' from an application's views.py.
-													<br>
-													<code>from django.http import HttpResponse</code><br>
-													<code>def main(request):</code><br>&nbsp&nbsp&nbsp
-													<code>return HttpResponse("&lt;h1&gt;Hello World&lt;/h1&gt;")</code>
-												</li>
-												<li>Called function accepts request from endpoint and returns HTML response.</li>
-												<li>Hitting endpoint: www.web-page.com/api/my_endpoint results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li>
+												<li>REST API enables to connect db by different apps as well as poses a web-service for front-end.</li>
+												<li>REST API has its onw business logic which is shared among apps getting connected.</li>
 											</ul>
 
 									</header>
@@ -163,12 +97,9 @@
 									<h3>Features</h3>
 									<p>App includes following features:</p>
 									<ul class="feature-icons">
-										<li class="icon solid fa-check">Object oriented database</li>
-										<li class="icon solid fa-check">Post forms data validation</li>
-										<li class="icon solid fa-check">User register/login system</li>
-										<li class="icon solid fa-check">User profile panel for info updates</li>
-										<li class="icon solid fa-check">Access security system</li>
-										<li class="icon solid fa-check">Page content filtering</li>
+										<li class="icon solid fa-check">Django</li>
+										<li class="icon solid fa-check">REST API</li>
+										<li class="icon solid fa-check">Rest Framework</li>
 									</ul>
 								</div>
 							</section>
@@ -177,27 +108,59 @@
 							<section id="three">
 								<div class="container">
 									<h3>Demo</h3>
-									<p>Tis section presents app's demo:</p>
-									<img src="images/django.gif" width="780">
 
-									<p>First entry site look.</p>
-									<img src="images/pr_system.JPG" width="780">
-
-									<p>All open requests are stored in the Home tab.</p>
-									<img src="images/pr_home.JPG" width="780">
-
-									<p>When Purchase Request closed, it goes to the Archive tab.</p>
-									<img src="images/pr_archive.JPG" width="780">
-
-									<p>Each buyer can enter a site with ist own Purchase Requests by clicking on the name.</p>
-									<img src="images/pr_buyer_view.JPG" width="780">
-
-									<p>Each buyer can access its Purchase Requests and udpdate/delete them.</p>
-									<img src="images/pr_update.JPG" width="780">
-
-									<p>Purchase Request number is restricted to be unique in db.</p>
-									<img src="images/pr_new.JPG" width="780">
-
+									<h5>Workflow of <b>api</b> application:</h5>
+									<ol>
+										<li>User hits the web address with a specified endpoint, e.g. www.web-page.com/<span style="color:#1cda7a;">api/</span><span style="color:red;">users</span>.</li>
+										<li>Note that provided endpoint has two parts: <span style="color:#1cda7a;">api/</span> and <span style="color:red;">users</span>.</li>
+										<li>Django goes to main rest_app urls.py searching for the <span style="color:#1cda7a;">api/</span> endpoint.
+											<br>
+											<code>from django.urls import path, include</code><br>
+											<code>urlpatterns = [</code><br>&nbsp&nbsp&nbsp
+											<code>path('<span style="color:#1cda7a;">api/</span>', include('api.urls'))</code><br>
+											<code>]</code>
+										</li>
+										<li>Due to instructions in rest_app urls.py endpoint <span style="color:red;">users</span> is being redirected to api urls.py.</li>
+										<li>The endpoint <span style="color:red;">users</span> follows instruction in api urls.py where is mapped with a function as_view() excuted on UserView:
+											<br>
+											<code>from django.urls import path</code><br>
+											<code>from .views import UserView</code><br>
+											<code>urlpatterns = [</code><br>&nbsp&nbsp
+											<code>path('<span style="color:red;">users</span>', UserView.as_view())</code><br>
+											<code>]</code>
+										</li>
+										<li>UserView uses serializer to get data into JSON:<br>
+											<code>from rest_framework import generics</code><br>
+											<code>from .serializers import UserSerializer</code><br>
+											<code>from .models import User</code><br>
+											<code>class UserView(generics.CreateAPIView):</code><br>&nbsp&nbsp&nbsp
+											<code>queryset = User.objects.all()</code><br>&nbsp&nbsp&nbsp
+											<code>serializer_class = UserSerializer</code>
+										</li>
+										<li>In serializers.py we define UserSerializer:<br>
+											<code>from rest_framework import serializers</code><br>
+											<code>from .models import User</code><br>
+											<code>class UserSerializer(serializers.ModelSerializer):</code><br>&nbsp&nbsp&nbsp
+											<code>class Meta:</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>model = User</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>fields = (<span style="color:#1cda7a;">'id', 'email', 'nick', 'level', 'created_date'</span>)</code><br>
+											- in class Meta we indicate which model we want to serialize,<br>
+											- fields determines the JSON structure of User model,<br>
+											- 'id' field is created automatically for every model once created in db so we want to include this in JSON.
+										</li>
+										<li>UserSerializer takes User as model:<br>
+											<code>from django.db import models</code><br>
+											<code>class User(models.Model):</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">email</span> = models.CharField(max_length=30, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">nick</span> = models.CharField(max_length=20, default='', unique=True)</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">level</span> = models.IntegerField(null=False, default=1)</code><br>&nbsp&nbsp&nbsp
+											<code><span style="color:#1cda7a;">created_date</span> = models.DateTimeField(auto_now_add=True)</code><br>
+											- notice, I don't declare 'id' field in the model,<br>
+											- as I said above, 'id' field is being generated automatically during model db creation.
+										</li>
+										<!-- <li>Called function accepts request from endpoint and returns HTML response.</li>
+										<li>Hitting endpoint: www.web-page.com/api/users results with html &lt;h1&gt;Hello World&lt;/h1&gt; being displayed.</li> -->
+									</ol>
 								</div>
 							</section>
 
@@ -209,25 +172,38 @@
 									<ol>
 									  <li>Installing django library in venv:
 									   <br>&nbsp&nbsp&nbsp
-									   <code>pip install django</code>
-									  </li>
-									  <li>Checking django version:
-									   <br>&nbsp&nbsp&nbsp
-									   <code>python -m django --version</code>
-									  </li>
+									   <code>pip install django</code><br>&nbsp&nbsp&nbsp
+										 <code>pip install djangorestframework</code>
+										<li>Installing most updated markdown:<br>&nbsp&nbsp&nbsp
+										<code>pip install git+https://github.com/Python-Markdown/markdown.git</code>
+										</li>
 									  <li>Starting project in project directory:
 									   <br>&nbsp&nbsp&nbsp
-									   <code>django-admin startproject project_name</code>
+									   <code>django-admin startproject rest_app</code>
 									  </li>
-									  <li>Running django projects server:
+									  <li>Changing directory to rest_app:
 									   <br>&nbsp&nbsp&nbsp
-									   <code>python manage.py runserver</code>
+									   <code>cd .\restapp</code>
 									  </li>
 									  <li>Creating app:
 									   <br>&nbsp&nbsp&nbsp
-									   <code>python manage.py startapp blog</code>
+									   <code>python manage.py startapp api</code>
 									  </li>
-									  <li>Data migration each time when we want to update changes to db (first migration will create a database with default tables):
+										<li>Creating new files in api application:
+											<br>&nbsp&nbsp&nbsp
+											<code>.\api\urls.py</code><br>&nbsp&nbsp&nbsp
+											<code>.\api\serializers.py</code>
+										</li>
+										<li>Entering apps to rest_app.settings:
+											<br>&nbsp&nbsp&nbsp
+											<code>INSTALLED_APS = [</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>....,</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>'api.apps.ApiConfig',</code><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+											<code>'rest_framework'</code><br>&nbsp&nbsp&nbsp
+											<code>]</code>
+										</li>
+
+										<li>Data migration each time when we want to update changes to db (first migration will create a database with default tables):
 									   <br>&nbsp&nbsp&nbsp
 									   <code>python manage.py makemigrations</code><br>&nbsp&nbsp&nbsp&nbsp
 									   it detects the changes and prepares them to be uploaded to the database<br>&nbsp&nbsp&nbsp&nbsp
@@ -241,15 +217,6 @@
 									   <br>&nbsp&nbsp&nbsp
 									   <code>python manage.py createsuperuser</code>
 									  </li>
-									  <li>Checking sql of migrations:
-									   <br>&nbsp&nbsp&nbsp
-									   <code>python manage.py sqlmigrate app_name num_of_migration</code><br>&nbsp&nbsp&nbsp&nbsp
-									   it shows how model class was interpreted into sql statement
-									  </li>
-									  <li>Working with models interactivley in django shell
-									   <br>&nbsp&nbsp&nbsp
-									   <code>python manage.py shell</code>
-									  </li>
 									</ol>
 								</div>
 							</section>
@@ -257,7 +224,7 @@
 							<section id="five">
 								<div class="container">
 									<h3>Source Code</h3>
-									<p>You can view the source code: <a href="https://github.com/ArturSkrzeta/Purchase-Request-Management-System/tree/master/django_project">HERE</a></p>
+									<p>You can view the source code: <a href="https://github.com/ArturSkrzeta/REST-API-with-Django-and-REST-Framework/tree/main/rest_app">HERE</a></p>
 									<p>&nbsp</p>
 								</div>
 							</section>
